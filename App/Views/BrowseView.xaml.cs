@@ -48,7 +48,7 @@ namespace App.View
 
         public BrowseView()
         {
-            this.RefreshEventList();
+            this.RefreshEventList("", "");
             this.InitializeComponent();
         }
 
@@ -77,7 +77,7 @@ namespace App.View
             }
         }
 
-        private async void RefreshEventList()
+        private async void RefreshEventList(string titleFilter, string tagsFilter)
         {
             /*
             HostedEvents =
@@ -168,12 +168,41 @@ namespace App.View
             };
 
             if (_eventsAreUpcoming)
+                allEvents = allEvents.Where(x => x.StartTime.CompareTo(DateTime.Now) == 1).ToList<HostedEvent>();
+
+            if (!string.IsNullOrEmpty(titleFilter))
+                allEvents = allEvents.Where(x => x.Event.Title.Contains(titleFilter)).ToList<HostedEvent>();
+
+            if (!string.IsNullOrEmpty(tagsFilter))
             {
-                var upcomingEvents = allEvents.Where(x => x.StartTime.CompareTo(DateTime.Now) == 1);
-                HostedEvents = upcomingEvents.ToList<HostedEvent>();
-                //PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(HostedEvents)));
-                return;
-        }
+                /*
+                 string[] tags;
+
+                if (tagsStr.Contains(", "))
+                    tags = tagsStr.Split(", ");
+                else
+                    tags = new string[] { tagsStr };
+
+                foreach (string tag in tags)
+                {
+                    queriedResults =
+                        queriedResults
+                        .Where(x => x.Event.Tags.Any(t => t.Content.Contains(tag)));
+                }
+                 */
+
+                string[] tags;
+
+                if (tagsFilter.Contains(", "))
+                    tags = tagsFilter.Split(", ");
+                else
+                    tags = new string[] { tagsFilter };
+
+                foreach(var tag in tags)
+                {
+                    allEvents = allEvents.Where(x => x.Event.Tags.Any(t => t.Content.Contains(tag))).ToList<HostedEvent>();
+                }
+            }
 
             HostedEvents = allEvents;
         }
@@ -187,6 +216,9 @@ namespace App.View
 
             DateTime start = viewedEvent.StartTime;
             DateTime end = viewedEvent.EndTime;
+
+            // Disable book button is event has started
+            BookButton.IsEnabled = start.CompareTo(DateTime.Now) == 1;
 
             StringBuilder sb = new StringBuilder();
             sb.Append($"{start.ToString("HH:mm")} - ");
@@ -214,9 +246,10 @@ namespace App.View
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            this.RefreshEventList();
+            this.RefreshEventList("", "");
             //RefreshContent(GetSelectedEvent());
             EventList.ItemsSource = HostedEvents;
+            EventList.SelectedIndex = 0;
         }
 
         private void EventList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -276,6 +309,18 @@ namespace App.View
                 // Return
                 return;
             }
+        }
+
+        private void TitleFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.RefreshEventList(TitleFilterTextBox.Text, TagFilterTextBox.Text);
+            EventList.ItemsSource = HostedEvents;
+        }
+
+        private void TagFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.RefreshEventList(TitleFilterTextBox.Text, TagFilterTextBox.Text);
+            EventList.ItemsSource = HostedEvents;
         }
     }
 }

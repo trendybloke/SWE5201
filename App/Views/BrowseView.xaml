@@ -18,29 +18,45 @@
                    DisplayMode="Inline"
                    OpenPaneLength="300">
             <SplitView.Pane>
-                <ListView Name="EventList"
-                          ItemsSource="{x:Bind HostedEvents}"
-                          SelectionChanged="EventList_SelectionChanged"
-                          SelectedIndex="0"
-                          BorderBrush="LightGray"
-                          BorderThickness="5">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:Name="EventListTemplate" x:DataType="models:HostedEvent">
-                            <StackPanel Height="Auto" Padding="20">
-                                <TextBlock  Text="{x:Bind Event.Title}" 
-                                            Style="{ThemeResource BaseTextBlockStyle}"/>
-                                <TextBlock  Text="{x:Bind Event.TagsString}" 
-                                            Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                <TextBlock  Text="{x:Bind StartEndString}" 
-                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                            FontSize="10"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <Grid Padding="0, 0, 0, 10">
+                    <TextBox Margin="0, 0, 0, 0"
+                             Height="20"
+                             VerticalAlignment="Top"
+                             PlaceholderText="Title"
+                             Name="TitleFilterTextBox"
+                             TextChanged="TitleFilterTextBox_TextChanged"/>
+                    <TextBox Margin="0, 40, 0, 0"
+                             Height="20"
+                             VerticalAlignment="Top"
+                             PlaceholderText="Tag, Tag, ..."
+                             Name="TagFilterTextBox"
+                             TextChanged="TagFilterTextBox_TextChanged"/>
+                    <ListView   Name="EventList"
+                                ItemsSource="{x:Bind HostedEvents}"
+                                SelectionChanged="EventList_SelectionChanged"
+                                SelectedIndex="0"
+                                BorderBrush="LightGray"
+                                BorderThickness="5"
+                                Height="Auto"
+                                Margin="0, 80, 0, 0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="EventListTemplate" x:DataType="models:HostedEvent">
+                                <StackPanel Height="Auto" Padding="20">
+                                    <TextBlock  Text="{x:Bind Event.Title}" 
+                                                Style="{ThemeResource BaseTextBlockStyle}"/>
+                                    <TextBlock  Text="{x:Bind Event.TagsString}" 
+                                                Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                    <TextBlock  Text="{x:Bind StartEndString}" 
+                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                FontSize="10"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Grid Padding="12">
+                <Grid Padding="10, -20, 0 ,0">
                     <TextBlock  Name="TitleTextBlock"
                                 Text="Event title"
                                 Margin="0, 0, 0, 0"

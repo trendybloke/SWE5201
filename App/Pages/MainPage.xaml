@@ -25,12 +25,13 @@
             </NavigationView.HeaderTemplate>
 
             <NavigationView.MenuItems>
+                <NavigationViewItemHeader Content="Browse Events"/>
                 <NavigationViewItem Content="Browse All Events" 
                                     Tag="App.View.BrowseView" 
                                     Icon="Calendar"/>
                 <NavigationViewItem Content="Browse Upcoming Events" 
                                     Tag="App.View.BrowseView" 
-                                    Icon="CalendarWeek"/>
+                                    Icon="CalendarDay"/>
             </NavigationView.MenuItems>
 
             <Frame Name="ContentFrame"></Frame>
