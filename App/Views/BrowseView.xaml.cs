@@ -48,6 +48,7 @@ namespace App.View
 
         public BrowseView()
         {
+            this.RefreshEventList();
             this.InitializeComponent();
         }
 
@@ -172,7 +173,7 @@ namespace App.View
                 HostedEvents = upcomingEvents.ToList<HostedEvent>();
                 //PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(HostedEvents)));
                 return;
-            }
+        }
 
             HostedEvents = allEvents;
         }
@@ -221,7 +222,7 @@ namespace App.View
         private void EventList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(HostedEvents != null)
-                RefreshContent(GetSelectedEvent());
+            RefreshContent(GetSelectedEvent());
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

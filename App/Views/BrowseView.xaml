@@ -19,6 +19,7 @@
                    OpenPaneLength="300">
             <SplitView.Pane>
                 <ListView Name="EventList"
+                          ItemsSource="{x:Bind HostedEvents}"
                           SelectionChanged="EventList_SelectionChanged"
                           SelectedIndex="0">
                     <ListView.ItemTemplate>

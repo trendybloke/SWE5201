@@ -23,17 +23,19 @@
                                Text="{Binding}" />
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
-
+            
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Browse All Events" 
                                     Tag="App.View.BrowseView" 
                                     Icon="Calendar"/>
-                <NavigationViewItem Content="Browse Upcoming Events"
-                                    Tag="App.View.BrowseView"
+                <NavigationViewItem Content="Browse Upcoming Events" 
+                                    Tag="App.View.BrowseView" 
                                     Icon="CalendarWeek"/>
             </NavigationView.MenuItems>
 
             <Frame Name="ContentFrame"></Frame>
         </NavigationView>
+
+        <Frame x:Name="ContentFrame"/>
     </Grid>
 </Page>
