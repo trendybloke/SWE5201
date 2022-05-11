@@ -1,0 +1,63 @@
+﻿<Page
+    x:Class="App.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <TextBlock HorizontalAlignment="Center" 
+                   Margin="0,20,0,0" 
+                   TextWrapping="Wrap" 
+                   Text="Welcome!" 
+                   VerticalAlignment="Top" 
+                   FontSize="72" 
+                   FontWeight="Bold"
+        />
+        <TextBlock  HorizontalAlignment="Center"
+                    Text="Username"
+                    FontSize="25"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Center"
+                    Margin="-180, 0, 0,0"
+        />
+        <TextBox    Name="UsernameTextBox"
+                    HorizontalAlignment="Center"
+                    Margin="0, 100, 0, 0"
+                    VerticalAlignment="Center"
+                    Width="300"
+                    CharacterReceived="LoginButtonToggle"
+        />
+        <TextBlock  HorizontalAlignment="Center"
+                    Text="Password"
+                    FontSize="25"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Center"
+                    Margin="-180, 200, 0,0"
+        />
+        <PasswordBox Name="PasswordTextBox"    
+                     HorizontalAlignment="Center" 
+                     Margin="0,300,0,0" 
+                     VerticalAlignment="Center" 
+                     Width="300"
+                     CharacterReceived="LoginButtonToggle"
+        />
+        <Button Name="LoginButton"
+                Content="Log in" 
+                Margin="-225,450,0,0" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center" IsEnabled="False"
+                Click="LoginButton_Click"
+        />
+        <Button Name="SignupButton"
+                Content="Sign up" 
+                Margin="225,450,0,0" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+        />
+    </Grid>
+
+</Page>
