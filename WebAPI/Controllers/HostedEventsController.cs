@@ -186,8 +186,21 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<HostedEvent>> PostHostedEvent(HostedEvent hostedEvent)
         {
-            _context.HostedEvent.Add(hostedEvent);
-            await _context.SaveChangesAsync();
+            try 
+            {
+                if(hostedEvent.Event != null)
+                    _context.Event.Attach(hostedEvent.Event);
+
+                if(hostedEvent.Room != null)
+                    _context.Room.Attach(hostedEvent.Room);
+                
+                _context.HostedEvent.Add(hostedEvent);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return CreatedAtAction("GetHostedEvent", new { id = hostedEvent.Id }, hostedEvent);
         }
