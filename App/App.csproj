@@ -126,6 +126,7 @@
     <Compile Include="Data\LoginUser.cs" />
     <Compile Include="Data\Token.cs" />
     <Compile Include="Data\UserSummary.cs" />
+    <Compile Include="Enums\BrowseViewState.cs" />
     <Compile Include="Helpers\LoginHelper.cs" />
     <Compile Include="Interfaces\IHasDataService.cs" />
     <Compile Include="Models\Event.cs" />

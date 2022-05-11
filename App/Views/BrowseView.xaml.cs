@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using App.Models;
+using App.Enums;
 using System.Text;
 using App.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,7 @@ namespace App.View
     /// </summary>
     public sealed partial class BrowseView : Page, INotifyPropertyChanged
     {
-        /*
+        
         private DataService dataService
         {
             get
@@ -39,10 +40,10 @@ namespace App.View
                             .GetService<DataService>();
             }
         }
-        */
+        
         private List<HostedEvent> HostedEvents;
 
-        private bool _eventsAreUpcoming;
+        private BrowseViewState browseViewState;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -79,8 +80,8 @@ namespace App.View
 
         private async void RefreshEventList(string titleFilter, string tagsFilter)
         {
-            /*
-            HostedEvents =
+            
+            var allEvents =
                 (await dataService.GetAllAsync<HostedEvent>())
                 .Select(x => new HostedEvent
                 {
@@ -93,104 +94,18 @@ namespace App.View
                     DurationDays = x.DurationDays,
                     EntranceFee = x.EntranceFee
                 }).ToList();
-            */
-
-            List<HostedEvent> allEvents = new List<HostedEvent>()
-            {
-                new HostedEvent()
-                {
-                    Id = 1,
-                    Event = new Event()
-                    {
-                        Id = 1,
-                        Title = "Stand up Comedy night",
-                        Description = "Come along for a night of laughs",
-                        Tags = new List<Tag>()
-                        {
-                            new Tag()
-                            {
-                                Id = 1,
-                                Content = "Comedy"
-                            },
-                            new Tag()
-                            {
-                                Id = 2,
-                                Content = "Live"
-                            }
-                        }
-                    },
-                    Room = new Room()
-                    {
-                        Id = 1,
-                        Name = "M1-11",
-                        Capacity = 150
-                    },
-                    StartTime = new DateTime(2021, 9, 12, 16, 0, 0),
-                    DurationMinutes = 30,
-                    DurationHours = 2,
-                    DurationDays = 0,
-                    EntranceFee = 0.5f
-                },
-                new HostedEvent()
-                {
-                    Id = 2,
-                    Event = new Event()
-                    {
-                        Id = 1,
-                        Title = "Stand up Comedy night",
-                        Description = "Come along for a night of laughs",
-                        Tags = new List<Tag>()
-                        {
-                            new Tag()
-                            {
-                                Id = 1,
-                                Content = "Comedy"
-                            },
-                            new Tag()
-                            {
-                                Id = 2,
-                                Content = "Live"
-                            }
-                        }
-                    },
-                    Room = new Room()
-                    {
-                        Id = 1,
-                        Name = "M1-11",
-                        Capacity = 150
-                    },
-                    StartTime = new DateTime(2022, 9, 12, 16, 0, 0),
-                    DurationMinutes = 30,
-                    DurationHours = 2,
-                    DurationDays = 0,
-                    EntranceFee = 0.5f
-                }
-            };
-
-            if (_eventsAreUpcoming)
+            
+            if (browseViewState == BrowseViewState.UPCOMING_EVENTS)
                 allEvents = allEvents.Where(x => x.StartTime.CompareTo(DateTime.Now) == 1).ToList<HostedEvent>();
+
+            if (browseViewState == BrowseViewState.FAVOURITED_EVENTS)
+                return;
 
             if (!string.IsNullOrEmpty(titleFilter))
                 allEvents = allEvents.Where(x => x.Event.Title.Contains(titleFilter)).ToList<HostedEvent>();
 
             if (!string.IsNullOrEmpty(tagsFilter))
             {
-                /*
-                 string[] tags;
-
-                if (tagsStr.Contains(", "))
-                    tags = tagsStr.Split(", ");
-                else
-                    tags = new string[] { tagsStr };
-
-                foreach (string tag in tags)
-                {
-                    queriedResults =
-                        queriedResults
-                        .Where(x => x.Event.Tags.Any(t => t.Content.Contains(tag)));
-                }
-                 */
-
                 string[] tags;
 
                 if (tagsFilter.Contains(", "))
@@ -262,12 +177,36 @@ namespace App.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            string wantedEvents = (e.Parameter as NavigationViewItem).Content.ToString().Split(" ")[1];
+            string[] wantedEvents = (e.Parameter as NavigationViewItem).Content.ToString().Split(" ");
 
             bool clickedUpcoming =
-                wantedEvents == "Upcoming";
+                wantedEvents[1] == "Upcoming";
 
-            _eventsAreUpcoming = clickedUpcoming;
+            if(clickedUpcoming)
+            {
+                browseViewState = BrowseViewState.UPCOMING_EVENTS;
+                return;
+            }
+
+            bool clickedFavourite =
+                wantedEvents[0] == "Favourited";
+
+            if (clickedFavourite)
+            {
+                browseViewState = BrowseViewState.FAVOURITED_EVENTS;
+                return;
+            }
+
+            bool clickedHostable =
+                wantedEvents[0] == "Hostable";
+
+            if (clickedHostable)
+            {
+                browseViewState = BrowseViewState.HOSTABLE_EVENTS;
+                return;
+            }
+
+            browseViewState = BrowseViewState.ALL_EVENTS;
         }
 
         private async void BookButton_Click(object sender, RoutedEventArgs e)

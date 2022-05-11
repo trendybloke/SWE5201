@@ -25,6 +25,7 @@
             </NavigationView.HeaderTemplate>
 
             <NavigationView.MenuItems>
+                <!--#region Viewable by all-->
                 <NavigationViewItemHeader Content="Browse Events"/>
                 <NavigationViewItem Content="Browse All Events" 
                                     Tag="App.View.BrowseView" 
@@ -32,8 +33,37 @@
                 <NavigationViewItem Content="Browse Upcoming Events" 
                                     Tag="App.View.BrowseView" 
                                     Icon="CalendarDay"/>
+                <!--#endregion-->
+                <!--#region Viewable by Students-->
+                <NavigationViewItem Content="Favourited Events"
+                                    Tag="App.View.BrowseView"
+                                    Icon="Favorite"/>
+                <!--#endregion-->
+                <!--#region Viewable by Staff and Admin-->
+                <NavigationViewItemHeader Content="Host Events"/>
+                <NavigationViewItem Content="Hostable Events"
+                                    Tag="App.View.BrowseView"
+                                    Icon="CalendarDay"/>
+                <NavigationViewItem Content="Create New Event"
+                                    Tag=""
+                                    Icon="List"/>
+                <!--#endregion-->
+                <!--#region Viewable by Admins-->
+                <NavigationViewItemHeader Content="User management"/>
+                <NavigationViewItem Content="View Users"
+                                    Tag=""
+                                    Icon="People"/>
+                <NavigationViewItem Content="Add Staff or Admin"
+                                    Tag=""
+                                    Icon="ContactInfo"/>
+                <!--#endregion-->
             </NavigationView.MenuItems>
 
+            <NavigationView.PaneFooter>
+                <NavigationViewItem Content="[Username]"
+                                    Icon="Contact"/>
+            </NavigationView.PaneFooter>
+            
             <Frame Name="ContentFrame"></Frame>
         </NavigationView>
     </Grid>

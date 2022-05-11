@@ -44,7 +44,7 @@ namespace App
         IServiceProvider ConfigureDependencyInjection()
         {
             var serviceCollection = new ServiceCollection();
-            /*
+            
             serviceCollection.AddSingleton<DataService>(s =>
                 new DataService("https://localhost:7269")
                         .AddEntityModelEndpoint<HostedEvent>("api/HostedEvents")
@@ -53,7 +53,7 @@ namespace App
                         //.AddEntityModelEndpoint<UserSummary>("api/Account")
                         .DisableThrowExceptionOnHttpClientError()
             ); 
-            */
+            
             return serviceCollection.BuildServiceProvider();
         }
 
