@@ -23,7 +23,7 @@
                                Text="{Binding}" />
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
-            
+
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Browse All Events" 
                                     Tag="App.View.BrowseView" 
@@ -35,7 +35,5 @@
 
             <Frame Name="ContentFrame"></Frame>
         </NavigationView>
-
-        <Frame x:Name="ContentFrame"/>
     </Grid>
 </Page>

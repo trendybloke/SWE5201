@@ -12,7 +12,7 @@
     Height="Auto"
     Loaded="Page_Loaded"
     Loading="Page_Loading">
-    <Grid Margin="60, 20, 0, 0"
+    <Grid Margin="60,10, 0, 0"
           >
         <SplitView IsPaneOpen="True"
                    DisplayMode="Inline"
@@ -21,10 +21,12 @@
                 <ListView Name="EventList"
                           ItemsSource="{x:Bind HostedEvents}"
                           SelectionChanged="EventList_SelectionChanged"
-                          SelectedIndex="0">
+                          SelectedIndex="0"
+                          BorderBrush="LightGray"
+                          BorderThickness="5">
                     <ListView.ItemTemplate>
                         <DataTemplate x:Name="EventListTemplate" x:DataType="models:HostedEvent">
-                            <StackPanel Height="84" Padding="20">
+                            <StackPanel Height="Auto" Padding="20">
                                 <TextBlock  Text="{x:Bind Event.Title}" 
                                             Style="{ThemeResource BaseTextBlockStyle}"/>
                                 <TextBlock  Text="{x:Bind Event.TagsString}" 

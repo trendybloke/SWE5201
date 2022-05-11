@@ -221,8 +221,10 @@ namespace App.View
 
         private void EventList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(HostedEvents != null)
-            RefreshContent(GetSelectedEvent());
+            if(HostedEvents != null && EventList.SelectedIndex >= 0)
+            {
+                RefreshContent(GetSelectedEvent());
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
