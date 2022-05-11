@@ -22,32 +22,9 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        #region GET: api/Events
+        #region GET: api/Events/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Event>>> GetEvent()
-        {
-            return await _context.Event.ToListAsync();
-        }
-        #endregion
-
-        #region GET: api/Events/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Event>> GetEvent(int id)
-        {
-            var @event = await _context.Event.FindAsync(id);
-
-            if (@event == null)
-            {
-                return NotFound();
-            }
-
-            return @event;
-        }
-        #endregion
-
-        #region GET: api/Events/WithTags
-        [HttpGet("WithTags/{title?}")]
-        public async Task<ActionResult<IEnumerable<Event>>> GetEventsWithTags
+        public async Task<ActionResult<IEnumerable<Event>>> GetEvents
             (string title = null)
         {
             var queryableEvents =
@@ -64,8 +41,24 @@ namespace WebAPI.Controllers
 
             return results;
         }
+        #endregion
 
+        #region GET: api/Events/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Event>> GetEvent(int id)
+        {
+            var @event = await _context
+                                .Event
+                                .Include(x => x.Tags)
+                                .Where(x => x.Id == id)
+                                .AsNoTracking()
+                                .FirstAsync();
 
+            if (@event == null)
+                return NotFound();
+
+            return @event;
+        }
         #endregion
 
         #region PUT: api/Events/5
@@ -129,14 +122,12 @@ namespace WebAPI.Controllers
         #region POST: api/Events
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Event>> PostEvent(Event @event)
+        public async Task<ActionResult<Event>> PostEvent([FromBody]Event @event)
         {
             try
             {
                 foreach(var tag in @event.Tags)
                     _context.Tag.Attach(tag);
-
-
 
                 _context.Event.Add(@event);
                 await _context.SaveChangesAsync();
