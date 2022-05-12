@@ -1,0 +1,90 @@
+﻿<Page
+    x:Class="App.View.BrowseEventsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App"
+    xmlns:models="using:App.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Width="Auto" 
+    Height="Auto"
+    Loaded="Page_Loaded">
+    <Grid Margin="60,10, 0, 0">
+        <SplitView IsPaneOpen="True"
+                   DisplayMode="Inline"
+                   OpenPaneLength="300">
+            <SplitView.Pane>
+                <Grid Padding="0, 0, 0, 10">
+                    <TextBox Margin="0, 0, 0, 0"
+                             Height="20"
+                             VerticalAlignment="Top"
+                             PlaceholderText="Title"
+                             Name="TitleFilterTextBox"
+                             TextChanged="TitleFilterTextBox_TextChanged"/>
+                    <TextBox Margin="0, 40, 0, 0"
+                             Height="20"
+                             VerticalAlignment="Top"
+                             PlaceholderText="Tag, Tag, ..."
+                             Name="TagFilterTextBox"
+                             TextChanged="TagFilterTextBox_TextChanged"/>
+                    <ListView   Name="EventList"
+                                ItemsSource="{x:Bind Events}"
+                                SelectionChanged="EventList_SelectionChanged"
+                                SelectedIndex="0"
+                                BorderBrush="LightGray"
+                                BorderThickness="5"
+                                Height="Auto"
+                                Margin="0, 80, 0, 0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="EventListTemplate" x:DataType="models:Event">
+                                <StackPanel Height="Auto" Padding="20">
+                                    <TextBlock  Text="{x:Bind Title}" 
+                                                Style="{ThemeResource BaseTextBlockStyle}"/>
+                                    <TextBlock  Text="{x:Bind TagsString}" 
+                                                Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid Padding="10, -20, 0 ,0">
+                    <TextBlock  Name="TitleTextBlock"
+                                Text="Event title"
+                                Margin="0, 0, 0, 0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                FontSize="72"/>
+                    <TextBlock  Name="TagsTextBlock"
+                                Text="Tags: Tag, Tag, Tag"
+                                Margin="0,101,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                FontSize="25"/>
+                    <Button     Name="EditButton"
+                                Content="Edit"
+                                Margin="0, 140, 0, 0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Click="EditButton_Click"/>
+                    <TextBlock  Text="Description"
+                                Margin="0,160,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                FontSize="40"/>
+                    <TextBlock  Name="DescriptionTextBlock"
+                                Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed nulla in urna cursus hendrerit. Ut sem neque, imperdiet vel lorem sit amet, finibus lacinia felis. Aenean ultricies ante eget quam hendrerit, ac convallis tellus congue. Fusce iaculis nunc velit, eget ultricies lorem venenatis aliquam. Quisque consectetur enim eget diam maximus finibus. Maecenas orci felis, accumsan sit amet velit sit amet, tempus aliquam massa. Nulla facilisi."
+                                Margin="0,220,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                FontSize="20"
+                                Width="800"
+                                TextWrapping="Wrap"/>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
+</Page>

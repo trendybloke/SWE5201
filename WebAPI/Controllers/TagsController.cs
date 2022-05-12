@@ -24,9 +24,23 @@ namespace WebAPI.Controllers
 
         // GET: api/Tags
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tag>>> GetTag()
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTag
+            (string content = null)
         {
-            return await _context.Tag.ToListAsync();
+            var queryableTags =
+                this._context
+                        .Tag
+                        .Include(x => x.Events)
+                        .AsNoTracking()
+                        .AsQueryable();
+
+            if (!string.IsNullOrEmpty(content))
+                queryableTags
+                    = queryableTags.Where(x => x.Content.Contains(content));
+
+            var results = await queryableTags.ToListAsync();
+
+            return results;
         }
 
         // GET: api/Tags/5
@@ -53,7 +67,33 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(tag).State = EntityState.Modified;
+            var existingTag =
+                await _context.Tag
+                            .Include(x => x.Events)
+                            .Where(x => x.Id == id)
+                            .SingleOrDefaultAsync();
+
+            if(existingTag != null)
+            {
+                // Update Tag
+                _context.Entry(existingTag)
+                    .CurrentValues
+                    .SetValues(tag);
+
+                // Remove non existing Events in Tag
+                foreach(var existingEvent in existingTag.Events.ToList())
+                {
+                    if(!tag.Events.Any(e => e.Id == existingEvent.Id))
+                        existingTag.Events.Remove(existingEvent);
+                }
+
+                // Add new Events
+                foreach(var newEvent in tag.Events)
+                {
+                    if (!existingTag.Events.Any(e => e.Id == newEvent.Id))
+                        existingTag.Events.Add(newEvent);
+                }
+            }
 
             try
             {

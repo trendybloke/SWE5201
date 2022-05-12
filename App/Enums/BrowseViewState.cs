@@ -5,6 +5,5 @@
         ALL_EVENTS,
         UPCOMING_EVENTS,
         FAVOURITED_EVENTS,
-        HOSTABLE_EVENTS
     }
 }

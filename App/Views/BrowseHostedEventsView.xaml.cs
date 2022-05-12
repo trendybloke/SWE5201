@@ -28,7 +28,7 @@ namespace App.View
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class BrowseView : Page, INotifyPropertyChanged
+    public sealed partial class BrowseHostedEventsView : Page, INotifyPropertyChanged
     {
         
         private DataService dataService
@@ -47,7 +47,7 @@ namespace App.View
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public BrowseView()
+        public BrowseHostedEventsView()
         {
             this.RefreshEventList("", "");
             this.InitializeComponent();
@@ -194,15 +194,6 @@ namespace App.View
             if (clickedFavourite)
             {
                 browseViewState = BrowseViewState.FAVOURITED_EVENTS;
-                return;
-            }
-
-            bool clickedHostable =
-                wantedEvents[0] == "Hostable";
-
-            if (clickedHostable)
-            {
-                browseViewState = BrowseViewState.HOSTABLE_EVENTS;
                 return;
             }
 

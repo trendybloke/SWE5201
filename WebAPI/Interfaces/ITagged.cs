@@ -25,8 +25,6 @@ namespace WebAPI.Interfaces
 
                 sb.Length = sb.Length - 2;
 
-                sb.Append(".");
-
                 return sb.ToString();
             }
         }

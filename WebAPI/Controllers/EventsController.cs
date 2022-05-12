@@ -87,7 +87,7 @@ namespace WebAPI.Controllers
                 // Remove now non existing tags in Event
                 foreach(var existingTag in existingEvent.Tags.ToList())
                 {
-                    if (!existingEvent.Tags.Any(t => t.Id == existingTag.Id))
+                    if (!@event.Tags.Any(t => t.Content == existingTag.Content))
                         existingEvent.Tags.Remove(existingTag);
                 }
 

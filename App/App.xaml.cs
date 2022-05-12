@@ -48,6 +48,8 @@ namespace App
             serviceCollection.AddSingleton<DataService>(s =>
                 new DataService("https://localhost:7269")
                         .AddEntityModelEndpoint<HostedEvent>("api/HostedEvents")
+                        .AddEntityModelEndpoint<Event>("api/Events")
+                        .AddEntityModelEndpoint<Tag>("api/Tags")
                         //.AddEntityModelEndpoint<EditableUser>("api/Account")
                         //.AddEntityModelEndpoint<LoginUser>("api/Account")
                         //.AddEntityModelEndpoint<UserSummary>("api/Account")

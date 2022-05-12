@@ -28,21 +28,21 @@
                 <!--#region Viewable by all-->
                 <NavigationViewItemHeader Content="Browse Events"/>
                 <NavigationViewItem Content="Browse All Events" 
-                                    Tag="App.View.BrowseView" 
+                                    Tag="App.View.BrowseHostedEventsView" 
                                     Icon="Calendar"/>
                 <NavigationViewItem Content="Browse Upcoming Events" 
-                                    Tag="App.View.BrowseView" 
+                                    Tag="App.View.BrowseHostedEventsView" 
                                     Icon="CalendarDay"/>
                 <!--#endregion-->
                 <!--#region Viewable by Students-->
                 <NavigationViewItem Content="Favourited Events"
-                                    Tag="App.View.BrowseView"
+                                    Tag="App.View.BrowseHostedEventsView"
                                     Icon="Favorite"/>
                 <!--#endregion-->
                 <!--#region Viewable by Staff and Admin-->
                 <NavigationViewItemHeader Content="Host Events"/>
                 <NavigationViewItem Content="Hostable Events"
-                                    Tag="App.View.BrowseView"
+                                    Tag="App.View.BrowseEventsView"
                                     Icon="CalendarDay"/>
                 <NavigationViewItem Content="Create New Event"
                                     Tag=""
