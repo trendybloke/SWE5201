@@ -50,6 +50,7 @@ namespace App
                         .AddEntityModelEndpoint<HostedEvent>("api/HostedEvents")
                         .AddEntityModelEndpoint<Event>("api/Events")
                         .AddEntityModelEndpoint<Tag>("api/Tags")
+                        .AddEntityModelEndpoint<Room>("api/Rooms")
                         //.AddEntityModelEndpoint<EditableUser>("api/Account")
                         //.AddEntityModelEndpoint<LoginUser>("api/Account")
                         //.AddEntityModelEndpoint<UserSummary>("api/Account")

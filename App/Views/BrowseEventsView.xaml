@@ -70,6 +70,12 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Click="EditButton_Click"/>
+                    <Button     Name="HostButton"
+                                Content="Schedule this Event"
+                                Margin="60,140,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Click="HostButton_Click"/>
                     <TextBlock  Text="Description"
                                 Margin="0,160,0,0"
                                 HorizontalAlignment="Left"

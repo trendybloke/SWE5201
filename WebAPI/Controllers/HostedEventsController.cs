@@ -184,12 +184,16 @@ namespace WebAPI.Controllers
         #region POST: api/HostedEvents
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<HostedEvent>> PostHostedEvent(HostedEvent hostedEvent)
+        public async Task<ActionResult<HostedEvent>> PostHostedEvent([FromBody]HostedEvent hostedEvent)
         {
             try 
             {
-                if(hostedEvent.Event != null)
-                    _context.Event.Attach(hostedEvent.Event);
+                if (hostedEvent.Event != null)
+                {
+                    Event passedEvent = hostedEvent.Event;
+                    _context.Event.Attach(passedEvent);
+                    hostedEvent._EventId = passedEvent.Id;
+                }
 
                 if(hostedEvent.Room != null)
                     _context.Room.Attach(hostedEvent.Room);

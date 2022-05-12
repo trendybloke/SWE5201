@@ -21,6 +21,8 @@ using App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Microsoft.UI.Xaml.Controls;
+using Windows.Globalization.NumberFormatting;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -130,6 +132,7 @@ namespace App.View
                 //RefreshContent(GetSelectedEvent());
                 EventList.ItemsSource = Events;
                 EventList.SelectedIndex = 0;
+                _lastEvent = GetSelectedEvent();
             }
             catch (Exception ex)
             {
@@ -335,6 +338,165 @@ namespace App.View
 
                     await ErrorDialog.ShowAsync();
                 }
+            }
+        }
+
+        private async void HostButton_Click(object sender, RoutedEventArgs e)
+        {
+            var container = new StackPanel();
+
+            // Get Rooms
+            var roomObjs = (await dataService.GetAllAsync<Room>()).ToList();
+            string[] rooms = new string[roomObjs.Count];
+
+            for(int i = 0; i < rooms.Length; i++)
+                rooms[i] = roomObjs[i].Name;
+
+            var roomComboBox = new ComboBox()
+            {
+                ItemsSource = rooms,
+                Header = "Room"
+            };
+
+            var timePicker = new TimePicker()
+            {
+                Header = "Time"
+            };
+
+            var datePicker = new DatePicker()
+            {
+                Header = "Date"
+            };
+
+            var durationBox = new TextBox()
+            {
+                Header = "Duration (Days, Hours:Minutes)",
+                PlaceholderText = "x, xx:xx"
+            };
+
+            var feeNumberBox = new NumberBox()
+            {
+                Header = "Entrance fee (£x.xx)"
+            };
+
+            container.Children.Add(roomComboBox);
+            container.Children.Add(timePicker);
+            container.Children.Add(datePicker);
+            container.Children.Add(durationBox);
+            container.Children.Add(feeNumberBox);
+
+            ContentDialog hostEventDialog = new ContentDialog()
+            {
+                Title = $"Schedule {_lastEvent.Title}",
+                Content = container,
+                PrimaryButtonText = "Schedule",
+                CloseButtonText = "Close"
+            };
+
+            bool validInput = false;
+            while (!validInput)
+            {
+                var result = await hostEventDialog.ShowAsync();
+
+                if (result != ContentDialogResult.Primary)
+                    break;
+
+                // Check input format, display error if incorrect
+                ContentDialog incorrectInput = new ContentDialog()
+                {
+                    Title = "Incorrect input",
+                    CloseButtonText = "Ok"
+                };
+
+                // Room has to be selected
+                if(roomComboBox.SelectedIndex == -1)
+                {
+                    incorrectInput.Content = "You need to select a room";
+                    await incorrectInput.ShowAsync();
+                    continue;
+                }
+
+                // Date cannot be in the past
+                DateTime startTime;
+
+                startTime = new DateTime(datePicker.Date.DateTime.Year,
+                        datePicker.Date.DateTime.Month,
+                        datePicker.Date.DateTime.Day,
+                        timePicker.Time.Hours,
+                        timePicker.Time.Minutes,
+                        timePicker.Time.Seconds);
+
+                if(startTime.CompareTo(DateTime.Now) == -1)
+                {
+                    incorrectInput.Content = "Cannot pick a Date in the past.";
+                    await incorrectInput.ShowAsync();
+                    continue;
+                }
+
+                // Duration cannot be empty or equal zero
+                string[] splitByComma = durationBox.Text.Split(",");
+                string[] splitByCommaThenColon = splitByComma[1].Split(":");
+
+                bool validDay = int.TryParse(splitByComma[0], out int durDay);
+                bool validHours = int.TryParse(splitByCommaThenColon[0], out int durHour);
+                bool validMin = int.TryParse(splitByCommaThenColon[1], out int durMin);
+
+                if(!validDay || !validHours || !validMin)
+                {
+                    incorrectInput.Content = $"Incorrect format for Duration{Environment.NewLine}" +
+                        $"Ensure what you entered follows the format 'Days, Hours:Minutes'";
+                    await incorrectInput.ShowAsync();
+                    continue;
+                }
+
+                // Fee cannot be negative (assume empty means zero)
+                bool validFee = float.TryParse(feeNumberBox.Text, out float fee);
+                if(!validFee || fee < 0)
+                {
+                    incorrectInput.Content = "Entered fee is not a number. Make sure '£' is excluded.";
+                    await incorrectInput.ShowAsync();
+                    continue;
+                }
+
+                Debug.WriteLine(_lastEvent.Id);
+
+                // Build HostedEvent
+                HostedEvent newHostedEvent = new HostedEvent()
+                {
+                    Event = _lastEvent,
+                    Room = roomObjs[roomComboBox.SelectedIndex],
+                    StartTime = startTime,
+                    DurationMinutes = durMin,
+                    DurationHours = durHour,
+                    DurationDays = durDay,
+                    EntranceFee = fee
+                };
+
+                // Post
+                var postResult = await dataService.InsertAsync<HostedEvent>(newHostedEvent);
+                if (!dataService.LastResponse.IsSuccessStatusCode)
+                {
+                    ContentDialog failed = new ContentDialog()
+                    {
+                        Title = "Failed to schedule event",
+                        Content = dataService.LastResponse.StatusCode,
+                        CloseButtonText = "Ok"
+                    };
+
+                    await failed.ShowAsync();
+                    continue;
+                }
+                ContentDialog scheduled = new ContentDialog()
+                {
+                    Title = "Sucess",
+                    Content = "Scheduled the event!",
+                    CloseButtonText = "Ok"
+                };
+
+                await scheduled.ShowAsync();
+
+                validInput = true;
+                
             }
         }
     }
