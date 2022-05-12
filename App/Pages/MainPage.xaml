@@ -45,7 +45,7 @@
                                     Tag="App.View.BrowseEventsView"
                                     Icon="CalendarDay"/>
                 <NavigationViewItem Content="Create New Event"
-                                    Tag=""
+                                    Tag="App.Views.NewEventView"
                                     Icon="List"/>
                 <!--#endregion-->
                 <!--#region Viewable by Admins-->

@@ -150,6 +150,9 @@
     <Compile Include="Views\BrowseHostedEventsView.xaml.cs">
       <DependentUpon>BrowseHostedEventsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NewEventView.xaml.cs">
+      <DependentUpon>NewEventView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -219,6 +222,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\BrowseHostedEventsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewEventView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
