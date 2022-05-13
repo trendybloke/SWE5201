@@ -8,7 +8,7 @@
         public string Firstname => GivenName;
         public string Surname => FamilyName;
 
-        public string Username => Username;
+        // public string Username => Username;
     }
 
 }

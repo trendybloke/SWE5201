@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using WebAPI.Models;
 
 namespace WebAPI.Data
 {
-    public class WebAPIContext : DbContext
+    public class WebAPIContext : IdentityDbContext<ApplicationUser>
     {
         public WebAPIContext (DbContextOptions<WebAPIContext> options)
             : base(options)
@@ -36,6 +37,8 @@ namespace WebAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // Build Rooms
             modelBuilder.Entity<Room>()
                 .HasData(

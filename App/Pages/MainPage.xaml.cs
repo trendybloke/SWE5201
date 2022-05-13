@@ -3,6 +3,8 @@ using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
+using App.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Pages
 {
@@ -11,8 +13,17 @@ namespace App.Pages
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        NavigationViewItem _lastItem;
+        private DataService dataService
+        {
+            get
+            {
+                return ((App)App.Current)
+                            .Container
+                            .GetService<DataService>();
+            }
+        }
 
+        NavigationViewItem _lastItem;
         public NavigationView NavigationView
         {
             get { return nvMain; }

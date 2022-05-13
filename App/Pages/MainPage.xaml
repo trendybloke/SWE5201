@@ -60,7 +60,7 @@
             </NavigationView.MenuItems>
 
             <NavigationView.PaneFooter>
-                <NavigationViewItem Content="[Username]"
+                <NavigationViewItem Content="{x:Bind dataService.LoggedInUserAccount.Name}"
                                     Icon="Contact"/>
             </NavigationView.PaneFooter>
             

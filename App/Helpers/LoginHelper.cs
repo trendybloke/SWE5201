@@ -19,8 +19,8 @@ namespace App.Helpers
                     userLoginPage.LoginUser = new LoginUser()
                     {
                         // Can be used to pre-fill login details
-                        Username = "Admin",
-                        Password = "Pa$$w0rd!"
+                        Email = "admin@events.bolton.ac.uk",
+                        Password = "Super$ecretPassw0rd"
                     };
                     userLoginPage.SetPostLoginAction(() =>
                     {

@@ -8,6 +8,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using App.Data;
 using App.Interfaces;
 using App.Services;
+using App.Pages;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -138,6 +139,12 @@ namespace App
 
             try
             {
+                this.loginUser = new LoginUser()
+                {
+                    Email = this.UsernameTextBox.Text,
+                    Password = this.PasswordTextBox.Password
+                };
+
                 var loginResponse = await dataService
                                             .RemoveBearerToken()
                                             .DisableLoginOnUnauthorized()
@@ -152,9 +159,9 @@ namespace App
                 }
 
                 // On OK login
-                if(dataService.LoggedInUserAccount?.Username == LoginUser.Username)
+                if(dataService.LoggedInUserAccount?.Email == LoginUser.Email)
                 {
-                    this.Frame.Navigate(typeof(BrowsePage));
+                    this.Frame.Navigate(typeof(MainPage));
                 }
                 // On Not OK login - Wrong Username
                 else
