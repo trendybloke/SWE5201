@@ -3,6 +3,7 @@ using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Input;
 using App.Services;
 using App.Data;
 using Microsoft.Extensions.DependencyInjection;
@@ -106,6 +107,25 @@ namespace App.Pages
                 //NavigationView.Content = page;
                 //_lastItem = item;
                 //nvMain.Header = item.Content.ToString();
+            }
+        }
+
+        private async void LogoutNavItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ContentDialog confirmLogout = new ContentDialog()
+            {
+                Title = "Confirm logout",
+                Content = "Are you sure you want to log out?",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "No"
+            };
+
+            var confirmation = await confirmLogout.ShowAsync();
+
+            if(confirmation == ContentDialogResult.Primary)
+            {
+                dataService.LoggedInUserAccount = null;
+                this.Frame.Navigate(typeof(LoginPage));
             }
         }
     }

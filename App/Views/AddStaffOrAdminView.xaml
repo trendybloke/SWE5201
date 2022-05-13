@@ -8,7 +8,47 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
+    <Grid Name="PageGrid">
+        <TextBox    Name="FirstNameTextBox"
+                    Header="First name"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0,-500,0, 0"/>
+        <TextBox    Name="LastNameTextBox"
+                    Header="Last name"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0,-350,0, 0"/>
+        <TextBox    Name="EmailTextBox"
+                    Header="Email address"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0,-200,0, 0"/>
+        <PasswordBox    Name="PasswordTextBox"
+                    Header="Password"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0,-50,0, 0"/>
+        <PasswordBox    Name="ConfirmPasswordTextBox"
+                    Header="Confirm Password"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0, 100, 0, 0"/>
+        <CheckBox Name="StaffCheckBox"
+                  Content="Staff permissions"
+                  IsChecked="True"
+                  HorizontalAlignment="Center"
+                  Margin="-200, 200, 0, 0"/>
+        <CheckBox Name="AdminCheckBox"
+                  Content="Admin permissions"
+                  IsChecked="False"
+                  HorizontalAlignment="Center"
+                  Margin="200, 200, 0, 0"/>
+        <Button     Name="RegisterButton"
+                    Content="Register"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0, 300, 0, 0"
+                    Click="RegisterButton_Click"/>
     </Grid>
 </Page>

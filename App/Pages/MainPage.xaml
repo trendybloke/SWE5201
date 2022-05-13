@@ -74,8 +74,15 @@
             </NavigationView.MenuItems>
 
             <NavigationView.PaneFooter>
-                <NavigationViewItem Content="{x:Bind dataService.LoggedInUserAccount.Name}"
-                                    Icon="Contact"/>
+                <Grid>
+                    <NavigationViewItem Content="{x:Bind dataService.LoggedInUserAccount.Name}"
+                                        Icon="Contact"
+                                        Margin="0, -50, 0, 0"/>
+                    <NavigationViewItem Name="LogoutNavItem"
+                                        Content="Logout"
+                                        Icon="Back"
+                                        Tapped="LogoutNavItem_Tapped"/>
+                </Grid>
             </NavigationView.PaneFooter>
             
             <Frame Name="ContentFrame"></Frame>
