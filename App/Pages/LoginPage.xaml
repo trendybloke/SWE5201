@@ -57,6 +57,7 @@
                 Margin="225,450,0,0" 
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
+                Click="SignupButton_Click"
         />
     </Grid>
 

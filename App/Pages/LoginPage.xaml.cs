@@ -181,5 +181,10 @@ namespace App
                 await errorDialog.ShowAsync();
             }
         }
+
+        private void SignupButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(RegisterPage));
+        }
     }
 }

@@ -137,7 +137,8 @@ namespace WebAPI.Controllers
         #region POST api/Accounts/Register
         [HttpPost]
         [Route("Register")]
-        [Authorize(Roles = Roles.Admin + "," + Roles.Staff)]
+        [AllowAnonymous]
+        //[Authorize(Roles = Roles.Admin + "," + Roles.Staff)]
         public async Task<IActionResult> Register([FromBody] EditableUserViewModel model)
         {
             var userExists = await userManager.FindByNameAsync(model.Email);

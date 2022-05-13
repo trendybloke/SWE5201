@@ -1,5 +1,6 @@
 ﻿using App.Data;
 using App.Interfaces;
+using App.Pages;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -25,8 +26,9 @@ namespace App.Helpers
                     userLoginPage.SetPostLoginAction(() =>
                     {
                         System.Diagnostics.Debug.WriteLine("Logged in!");
-                        var mainPage = (BrowsePage)((ContentControl)Window.Current.Content).Content;
+                        var mainPage = (MainPage)((ContentControl)Window.Current.Content).Content;
                         var currentDataServiceEnabledPage = page as IHasDataService;
+                        /*
                         if (currentDataServiceEnabledPage.dataService.LoggedInUserAccount != null &&
                          currentDataServiceEnabledPage.dataService.LoggedInUserAccount.IsAdmin)
                         {
@@ -36,6 +38,7 @@ namespace App.Helpers
                         {
                             mainPage.ManageUsersVisibility = Visibility.Collapsed;
                         }
+                        */
                     });
                 }
                 page.Frame.Navigated -= navigatedHandler;
@@ -49,7 +52,7 @@ namespace App.Helpers
             currentDataServiceEnabledPage.dataService.RemoveBearerToken();
             currentDataServiceEnabledPage.dataService.LoggedInUserAccount = null;
             Frame rootFrame = Window.Current.Content as Frame;
-            rootFrame.Navigate(typeof(BrowsePage));
+            rootFrame.Navigate(typeof(LoginPage));
         }
 
     }

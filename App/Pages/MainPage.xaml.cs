@@ -4,6 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using App.Services;
+using App.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Pages
@@ -39,6 +40,38 @@ namespace App.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             this.NavigateTo(this.nvMain.MenuItems[0] as NavigationViewItem);
+
+            LoggedInUserAccount thisUser = dataService.LoggedInUserAccount;
+
+            if (thisUser.IsStudent)
+            {
+                // Show favourited events
+                FavouritedEventsNavItem.Visibility = Visibility.Visible;
+            }
+
+            if(thisUser.IsStaff || thisUser.IsAdmin)
+            {
+                // Show Host Events Header
+                HostEventsNavHeader.Visibility = Visibility.Visible;
+
+                // Show Host Events
+                HostableEventsNavItem.Visibility = Visibility.Visible;
+
+                // Show Create new Event
+                CreateNewEventNavItem.Visibility = Visibility.Visible;
+            }
+
+            if (thisUser.IsAdmin)
+            {
+                // Show User Management Header
+                UserManagementNavHeader.Visibility = Visibility.Visible;
+
+                // Show User Management
+                UserManagmentNavItem.Visibility = Visibility.Visible;
+
+                // Show Add Staff or Admin
+                AddStaffAdminNavItem.Visibility = Visibility.Visible;
+            }
         }
         private void nvMain_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
