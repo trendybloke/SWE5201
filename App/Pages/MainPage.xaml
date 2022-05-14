@@ -62,7 +62,7 @@
                                           Visibility="Collapsed"/>
                 <NavigationViewItem Name="UserManagmentNavItem"
                                     Content="View Users"
-                                    Tag="App.Views.ViewUserView"
+                                    Tag="App.Views.ViewUsersView"
                                     Icon="People"
                                     Visibility="Collapsed"/>
                 <NavigationViewItem Name="AddStaffAdminNavItem"

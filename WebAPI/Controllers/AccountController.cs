@@ -13,7 +13,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
 
         #region GET api/Accounts/List
         [HttpGet("List")]
-        [Authorize(Roles = Roles.Admin + "," + Roles.Staff)]
+        //[Authorize(Roles = Roles.Admin)]
         public ActionResult<IEnumerable<UserSummaryViewModel>> List()
         {
             var list = userManager
@@ -109,7 +109,7 @@ namespace WebAPI.Controllers
 
         #region GET api/Accounts/Modify/{id}
         [HttpGet("Modify/{id}")]
-        [Authorize(Roles = Roles.Admin + "," + Roles.Staff)]
+        //[Authorize(Roles = Roles.Admin)]
         public async Task<ActionResult<EditableUserViewModel>> Modify(string id)
         {
             if (id == null)
@@ -137,7 +137,7 @@ namespace WebAPI.Controllers
         #region POST api/Accounts/Register
         [HttpPost]
         [Route("Register")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         //[Authorize(Roles = Roles.Admin + "," + Roles.Staff)]
         public async Task<IActionResult> Register([FromBody] EditableUserViewModel model)
         {
@@ -176,7 +176,7 @@ namespace WebAPI.Controllers
 
         #region PUT api/Accounts/Modify/{id}
         [HttpPut("Modify/{id}")]
-        [Authorize(Roles = Roles.Admin)]
+        //[Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Modify
             (string id, [FromBody] EditableUserViewModel modifiedUser)
         {
@@ -224,7 +224,7 @@ namespace WebAPI.Controllers
         #region POST api/Accounts/Login
         [HttpPost]
         [Route("Login")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginUserViewModel model)
         {
             var user = await userManager.FindByNameAsync(model.Email);
