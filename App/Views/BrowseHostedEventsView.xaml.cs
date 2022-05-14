@@ -93,7 +93,9 @@ namespace App.View
                     DurationHours = x.DurationHours,
                     DurationDays = x.DurationDays,
                     EntranceFee = x.EntranceFee
-                }).ToList();
+                })
+                .OrderBy(e => e.StartTime)
+                .ToList();
             
             if (browseViewState == BrowseViewState.UPCOMING_EVENTS)
                 allEvents = allEvents.Where(x => x.StartTime.CompareTo(DateTime.Now) == 1).ToList<HostedEvent>();
@@ -119,8 +121,49 @@ namespace App.View
                 }
             }
 
+            if(DateFilterComboBox != null)
+            {
+                switch (DateFilterComboBox.SelectedIndex)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        allEvents = allEvents
+                                        .Where(x => EventOccursThisWeek(x)).ToList();
+                        break;
+                    case 2:
+                        allEvents = allEvents
+                                        .Where(x => EventOccursNextWeek(x)).ToList();
+                        break;  
+                    case 3:
+                        allEvents = allEvents
+                                        .Where(x => EventOccursThisMonth(x)).ToList();
+                        break;
+                }
+            }
+
             HostedEvents = allEvents;
         }
+
+        private bool EventOccursThisWeek(HostedEvent _event)
+        {
+            int thisWeek = DateTime.Now.DayOfYear - (int)DateTime.Now.DayOfWeek + 1;
+            return thisWeek < _event.StartTime.DayOfYear
+                && thisWeek + 7 > _event.EndTime.DayOfYear;
+        }
+
+        private bool EventOccursNextWeek(HostedEvent _event)
+        {
+            int nextWeek = (DateTime.Now.DayOfYear + 7) - (int)DateTime.Now.DayOfWeek + 1;
+            return nextWeek < _event.StartTime.DayOfYear
+                && nextWeek + 7 > _event.EndTime.DayOfYear;
+        }
+
+        private bool EventOccursThisMonth(HostedEvent _event)
+        {
+            return DateTime.Now.Month == _event.StartTime.Month;
+        }
+
 
         private void RefreshContent(HostedEvent viewedEvent)
         {
@@ -251,6 +294,14 @@ namespace App.View
         {
             this.RefreshEventList(TitleFilterTextBox.Text, TagFilterTextBox.Text);
             EventList.ItemsSource = HostedEvents;
+        }
+
+        private void DateFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this.RefreshEventList(TitleFilterTextBox.Text, TagFilterTextBox.Text);
+
+            if(EventList != null)
+                EventList.ItemsSource = HostedEvents;
         }
     }
 }

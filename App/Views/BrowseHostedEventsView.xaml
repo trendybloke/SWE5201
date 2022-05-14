@@ -31,6 +31,16 @@
                              PlaceholderText="Tag, Tag, ..."
                              Name="TagFilterTextBox"
                              TextChanged="TagFilterTextBox_TextChanged"/>
+                    <ComboBox Name="DateFilterComboBox"
+                              Margin="0, 80, 0 ,0"
+                              Width="300"
+                              SelectedIndex="0"
+                              SelectionChanged="DateFilterComboBox_SelectionChanged">
+                        <ComboBoxItem Content="All"/>
+                        <ComboBoxItem Content="This week"/>
+                        <ComboBoxItem Content="Next week"/>
+                        <ComboBoxItem Content="This month"/>
+                    </ComboBox>
                     <ListView   Name="EventList"
                                 ItemsSource="{x:Bind HostedEvents}"
                                 SelectionChanged="EventList_SelectionChanged"
@@ -38,7 +48,7 @@
                                 BorderBrush="LightGray"
                                 BorderThickness="5"
                                 Height="Auto"
-                                Margin="0, 80, 0, 0">
+                                Margin="0, 120, 0, 0">
                         <ListView.ItemTemplate>
                             <DataTemplate x:Name="EventListTemplate" x:DataType="models:HostedEvent">
                                 <StackPanel Height="Auto" Padding="20">
