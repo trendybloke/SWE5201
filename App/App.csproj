@@ -130,6 +130,7 @@
     <Compile Include="Helpers\LoginHelper.cs" />
     <Compile Include="Interfaces\IHasDataService.cs" />
     <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\EventBooking.cs" />
     <Compile Include="Models\HostedEvent.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\Tag.cs" />

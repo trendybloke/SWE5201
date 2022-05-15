@@ -101,7 +101,8 @@
                                 Content="Book"
                                 VerticalAlignment="Top"
                                 Margin="220,211,0,0"
-                                Click="BookButton_Click"/>
+                                Click="BookButton_Click"
+                                Visibility="Collapsed"/>
                     <TextBlock  Name="FeeTextBlock"
                                 Text="Entrance Fee: £x.xx"
                                 Margin="0,211,0,0"

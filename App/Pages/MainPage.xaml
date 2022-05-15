@@ -36,7 +36,7 @@
                 <!--#endregion-->
                 <!--#region Viewable by Students-->
                 <NavigationViewItem Name="FavouritedEventsNavItem"
-                                    Content="Favourited Events"
+                                    Content="Booked Events"
                                     Tag="App.View.BrowseHostedEventsView"
                                     Icon="Favorite"
                                     Visibility="Collapsed"/>

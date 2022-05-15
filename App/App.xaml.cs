@@ -54,6 +54,7 @@ namespace App
                         .AddEntityModelEndpoint<EditableUser>("api/Account")
                         .AddEntityModelEndpoint<LoginUser>("api/Account")
                         .AddEntityModelEndpoint<UserSummary>("api/Account")
+                        .AddEntityModelEndpoint<EventBooking>("api/EventBookings")
                         .DisableThrowExceptionOnHttpClientError()
             ); 
             

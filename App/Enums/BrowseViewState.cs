@@ -4,6 +4,6 @@
     {
         ALL_EVENTS,
         UPCOMING_EVENTS,
-        FAVOURITED_EVENTS,
+        BOOKED_EVENTS,
     }
 }

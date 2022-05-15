@@ -225,12 +225,13 @@ namespace App.Services
             //.ConfigureAwait(false);
 
             LastResponse = Client.GetAsync(uri).Result;
-                    
+
             if (LastResponse.IsSuccessStatusCode)
             {
                 // read the content returned by the GET request
                 var content = await LastResponse.Content
                                         .ReadFromJsonAsync<List<TEntity>>();
+
                 // return deserialised objects back to caller as List<TEntity> collection
                 return content;
             }

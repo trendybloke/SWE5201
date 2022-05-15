@@ -20,6 +20,7 @@ using System.Text;
 using App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
+using App.Data;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -42,6 +43,8 @@ namespace App.View
         }
         
         private List<HostedEvent> HostedEvents;
+
+        private HostedEvent _lastEvent;
 
         private BrowseViewState browseViewState;
 
@@ -100,8 +103,33 @@ namespace App.View
             if (browseViewState == BrowseViewState.UPCOMING_EVENTS)
                 allEvents = allEvents.Where(x => x.StartTime.CompareTo(DateTime.Now) == 1).ToList<HostedEvent>();
 
-            if (browseViewState == BrowseViewState.FAVOURITED_EVENTS)
-                return;
+            if (browseViewState == BrowseViewState.BOOKED_EVENTS)
+            {
+                var usersBookings = (await dataService.GetAllAsync<EventBooking>
+                         ("ByUser", new List<string> { dataService.LoggedInUserAccount.Id }))
+                                         .Select(x => new EventBooking
+                                         {
+                                             Id = x.Id,
+                                             UserId = x.UserId,
+                                             HostedEventId = x.HostedEventId,
+                                             //HostedEvent = await dataService.GetAsync<HostedEvent, int>(x.HostedEventId),
+                                             Attended = x.Attended,
+                                         }).ToList();
+
+                    // Need to determine if a given userBooking.HostedEventId appears in allEvents
+                    // If it doesn't, then that hosted event needs to be removed from allEvents
+
+                List<HostedEvent> bookedEvents = new List<HostedEvent>();
+
+                foreach (var booking in usersBookings)
+                {
+                    booking.HostedEvent = await dataService.GetAsync<HostedEvent, int>(booking.HostedEventId);
+
+                    bookedEvents.Add(booking.HostedEvent);
+                }
+
+                allEvents = bookedEvents;
+            }
 
             if (!string.IsNullOrEmpty(titleFilter))
                 allEvents = allEvents.Where(x => x.Event.Title.Contains(titleFilter)).ToList<HostedEvent>();
@@ -143,6 +171,9 @@ namespace App.View
             }
 
             HostedEvents = allEvents;
+
+            if (EventList != null)
+                EventList.ItemsSource = HostedEvents;
         }
 
         private bool EventOccursThisWeek(HostedEvent _event)
@@ -175,7 +206,7 @@ namespace App.View
             DateTime start = viewedEvent.StartTime;
             DateTime end = viewedEvent.EndTime;
 
-            // Disable book button is event has started
+            // Disable book button if event has started
             BookButton.IsEnabled = start.CompareTo(DateTime.Now) == 1;
 
             StringBuilder sb = new StringBuilder();
@@ -208,6 +239,9 @@ namespace App.View
             //RefreshContent(GetSelectedEvent());
             EventList.ItemsSource = HostedEvents;
             EventList.SelectedIndex = 0;
+            if (dataService.LoggedInUserAccount.Role.Contains("Student") &&
+                browseViewState != BrowseViewState.BOOKED_EVENTS)
+                BookButton.Visibility = Visibility.Visible;
         }
 
         private void EventList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -215,6 +249,7 @@ namespace App.View
             if(HostedEvents != null && EventList.SelectedIndex >= 0)
             {
                 RefreshContent(GetSelectedEvent());
+                _lastEvent = GetSelectedEvent();
             }
         }
 
@@ -231,12 +266,12 @@ namespace App.View
                 return;
             }
 
-            bool clickedFavourite =
-                wantedEvents[0] == "Favourited";
+            bool clickedBooked =
+                wantedEvents[0] == "Booked";
 
-            if (clickedFavourite)
+            if (clickedBooked)
             {
-                browseViewState = BrowseViewState.FAVOURITED_EVENTS;
+                browseViewState = BrowseViewState.BOOKED_EVENTS;
                 return;
             }
 
@@ -246,41 +281,111 @@ namespace App.View
         private async void BookButton_Click(object sender, RoutedEventArgs e)
         {
             // Get selected event
-            HostedEvent selectedEvent = GetSelectedEvent();
+            HostedEvent selectedEvent = _lastEvent;
 
             // Confimation dialog
             ContentDialog confirmBook = new ContentDialog()
             {
                 Title = "Confirm booking?",
-                Content = $"Room {selectedEvent.Room} " +
+                Content = $"Room {selectedEvent.Room.Name} " +
                 $"at {selectedEvent.StartTime.ToString("HH:mm")} " +
                 $"on {selectedEvent.StartTime.ToString("dddd, dd/MM/yyyy")}",
                 PrimaryButtonText = "Confirm",
-                SecondaryButtonText = "Cancel"
+                CloseButtonText = "Cancel"
             };
 
-            // Already booked dialog
-            ContentDialog alreadyBooked = new ContentDialog()
-            {
-                Title = "Unable to book",
-                Content = "You're already booked to see this event!",
-                CloseButtonText = "Oops"
-            };
 
             // Show confirm dialog
-            var userAction = await alreadyBooked.ShowAsync();
+            var userAction = await confirmBook.ShowAsync();
 
             // If Primary Button selected
             if (userAction == ContentDialogResult.Primary)
             {
+                // Already booked dialog
+                ContentDialog alreadyBooked = new ContentDialog()
+                {
+                    Title = "Unable to book",
+                    Content = "You're already booked to see this event!",
+                    CloseButtonText = "Ok"
+                };
+
+                // Get this user
+                //UserSummary thisUser =
+                //    await dataService
+                //            .GetAsync<UserSummary, string>
+                //                (dataService.LoggedInUserAccount.Id, "Summary");
+
                 // Book event
-                return;
-            }
-            // If Secondary Button selected
-            else
-            {
-                // Return
-                return;
+                //EventBooking newBooking = new EventBooking()
+                //{
+                //    HostedEvent = _lastEvent,
+                //    User = new UserSummary {
+                //        Id = dataService.LoggedInUserAccount.Id,
+                //        Email = dataService.LoggedInUserAccount.Email,
+                //        FirstName = dataService.LoggedInUserAccount.Firstname,
+                //        LastName = dataService.LoggedInUserAccount.Surname
+                //    },
+                //    Attended = false
+                //};
+
+                EventBooking newBooking = new EventBooking()
+                {
+                    HostedEventId = _lastEvent.Id,
+                    UserId = dataService.LoggedInUserAccount.Id,
+                    Attended = false
+                };
+
+                //if (dataService.GetAllAsync<EventBooking>
+                //    ("ByUser", 
+                //        new List<string>() 
+                //        { dataService.LoggedInUserAccount.Id }
+                //    ).Result.Contains(newBooking))
+                //{
+                //    await alreadyBooked.ShowAsync();
+                //    return;
+                //}
+
+                var usersBookings = (await dataService.GetAllAsync<EventBooking>
+                        ("ByUser", new List<string> { dataService.LoggedInUserAccount.Id }))
+                                        .Select(x => new EventBooking
+                                        {
+                                            Id = x.Id,
+                                            UserId = x.UserId,
+                                            HostedEventId = x.HostedEventId,
+                                            Attended = x.Attended,
+                                        }).ToList();
+
+                if(usersBookings.Any(x => x.HostedEventId == newBooking.HostedEventId))
+                {
+                    await alreadyBooked.ShowAsync();
+                    return;
+                }
+
+
+                var bookResult = 
+                    await dataService.InsertAsync<EventBooking>(newBooking, "Book");
+
+                if(bookResult == null)
+                {
+                    ContentDialog bookFailed = new ContentDialog()
+                    {
+                        Title = "Failed to book onto Event",
+                        Content = dataService.LastResponse,
+                        CloseButtonText = "Ok"
+                    };
+
+                    await bookFailed.ShowAsync();
+                    return;
+                }
+
+                ContentDialog bookSucceeded = new ContentDialog()
+                {
+                    Title = "Success",
+                    Content = "Booked Event",
+                    CloseButtonText = "Ok"
+                };
+
+                await bookSucceeded.ShowAsync();
             }
         }
 

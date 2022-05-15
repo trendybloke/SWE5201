@@ -26,7 +26,16 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<HostedEvent>> GetHostedEvent(int id)
         {
-            var hostedEvent = await _context.HostedEvent.FindAsync(id);
+            var query = _context.HostedEvent
+                                        .Include(x => x.Event)
+                                        .Include(x => x.Room)
+                                        .Include(x => x.Event.Tags)
+                                        .AsNoTracking()
+                                        .AsQueryable();
+
+            var hostedEvent = await query
+                                        .Where(x => x.Id == id)
+                                        .FirstOrDefaultAsync();
 
             if (hostedEvent == null)
             {

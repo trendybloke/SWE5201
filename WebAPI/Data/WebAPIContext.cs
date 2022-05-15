@@ -22,6 +22,8 @@ namespace WebAPI.Data
 
         public DbSet<HostedEvent> HostedEvent { get; set; }
 
+        public DbSet<EventBooking> EventBooking { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             IConfiguration Configuration = new ConfigurationBuilder()
