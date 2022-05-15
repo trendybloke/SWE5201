@@ -60,6 +60,9 @@ namespace App.Pages
 
                 // Show Create new Event
                 CreateNewEventNavItem.Visibility = Visibility.Visible;
+
+                // Show Attendance view
+                AttendanceNavItem.Visibility = Visibility.Visible;
             }
 
             if (thisUser.IsAdmin)

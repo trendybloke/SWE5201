@@ -59,9 +59,16 @@ namespace WebAPI.Controllers
                                                 .AsNoTracking()
                                                 .AsQueryable();
 
-            var results = await allBookings.Where(x => x.HostedEventId == HostedEventId).ToListAsync();
+            try
+            {
+                var results = await allBookings.Where(x => x.HostedEventId == HostedEventId).ToListAsync();
 
-            return results;
+                return results;
+            }
+            catch (Exception ex)
+            {
+                return new List<EventBooking>();
+            }
         }
         #endregion
 

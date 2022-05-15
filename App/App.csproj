@@ -148,6 +148,9 @@
     <Compile Include="Views\AddStaffOrAdminView.xaml.cs">
       <DependentUpon>AddStaffOrAdminView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AttendanceView.xaml.cs">
+      <DependentUpon>AttendanceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BrowseEventsView.xaml.cs">
       <DependentUpon>BrowseEventsView.xaml</DependentUpon>
     </Compile>
@@ -228,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddStaffOrAdminView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AttendanceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

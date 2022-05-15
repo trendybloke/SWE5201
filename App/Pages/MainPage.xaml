@@ -55,6 +55,11 @@
                                     Tag="App.Views.NewEventView"
                                     Icon="List"
                                     Visibility="Collapsed"/>
+                <NavigationViewItem Name="AttendanceNavItem"
+                                    Content="Mark attendance"
+                                    Tag="App.Views.AttendanceView"
+                                    Icon="AddFriend"
+                                    Visibility="Collapsed"/>
                 <!--#endregion-->
                 <!--#region Viewable by Admins-->
                 <NavigationViewItemHeader Name="UserManagementNavHeader"

@@ -83,7 +83,7 @@ namespace WebAPI.Controllers
 
         #region GET api/Accounts/Summary/{id}
         [HttpGet("Summary/{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<UserSummaryViewModel>> Summary(string id)
         {
             if (id == null)
